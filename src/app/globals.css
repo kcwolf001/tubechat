@@ -164,26 +164,16 @@ body {
   background: var(--muted-foreground);
 }
 
-/* Claude sparkle/asterisk thinking animation */
-@keyframes claudeSparkle {
-  0%, 100% {
-    transform: rotate(0deg) scale(1);
-    opacity: 0.85;
+/* Claude thinking animation */
+@keyframes claudeThink {
+  0% {
+    transform: rotate(0deg);
   }
-  25% {
-    transform: rotate(90deg) scale(0.8);
-    opacity: 0.5;
-  }
-  50% {
-    transform: rotate(180deg) scale(1);
-    opacity: 0.85;
-  }
-  75% {
-    transform: rotate(270deg) scale(0.8);
-    opacity: 0.5;
+  100% {
+    transform: rotate(360deg);
   }
 }
 
-.animate-claude-sparkle {
-  animation: claudeSparkle 3s ease-in-out infinite;
+.animate-claude-think {
+  animation: claudeThink 4s linear infinite;
 }

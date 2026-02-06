@@ -32,11 +32,18 @@ export function Hero() {
         <div className="flex justify-center mb-8 animate-fade-in-up">
           <span className="inline-flex items-center gap-2 rounded-full border border-[var(--border)] bg-[var(--muted)] px-4 py-1.5 text-xs font-medium text-[var(--muted-foreground)]">
             <svg
-              className="h-4 w-4 animate-claude-sparkle text-[var(--accent-light)]"
-              viewBox="0 0 24 24"
-              fill="currentColor"
+              className="h-4 w-4 animate-claude-think"
+              viewBox="0 0 60 60"
+              fill="none"
+              xmlns="http://www.w3.org/2000/svg"
             >
-              <path d="M12 2 L14 8.5 L20 7 L15.5 12 L20 17 L14 15.5 L12 22 L10 15.5 L4 17 L8.5 12 L4 7 L10 8.5 Z" />
+              <circle cx="30" cy="10.5" r="5.5" fill="#E07A3A" />
+              <circle cx="47.5" cy="20" r="5.5" fill="#E07A3A" />
+              <circle cx="47.5" cy="40" r="5.5" fill="#E07A3A" />
+              <circle cx="30" cy="49.5" r="5.5" fill="#E07A3A" />
+              <circle cx="12.5" cy="40" r="5.5" fill="#E07A3A" />
+              <circle cx="12.5" cy="20" r="5.5" fill="#E07A3A" />
+              <circle cx="30" cy="30" r="7" fill="#E07A3A" />
             </svg>
             Powered by Claude AI
           </span>
