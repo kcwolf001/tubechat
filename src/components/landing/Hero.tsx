@@ -32,7 +32,7 @@ export function Hero() {
         <div className="flex justify-center mb-8 animate-fade-in-up">
           <span className="inline-flex items-center gap-2 rounded-full border border-[var(--border)] bg-[var(--muted)] px-4 py-1.5 text-xs font-medium text-[var(--muted-foreground)]">
             <svg
-              className="h-4 w-4 animate-claude-think"
+              className="h-4 w-4"
               viewBox="0 0 64 64"
               fill="none"
               xmlns="http://www.w3.org/2000/svg"
