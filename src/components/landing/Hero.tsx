@@ -33,17 +33,22 @@ export function Hero() {
           <span className="inline-flex items-center gap-2 rounded-full border border-[var(--border)] bg-[var(--muted)] px-4 py-1.5 text-xs font-medium text-[var(--muted-foreground)]">
             <svg
               className="h-4 w-4 animate-claude-think"
-              viewBox="0 0 60 60"
+              viewBox="0 0 64 64"
               fill="none"
               xmlns="http://www.w3.org/2000/svg"
             >
-              <circle cx="30" cy="10.5" r="5.5" fill="#E07A3A" />
-              <circle cx="47.5" cy="20" r="5.5" fill="#E07A3A" />
-              <circle cx="47.5" cy="40" r="5.5" fill="#E07A3A" />
-              <circle cx="30" cy="49.5" r="5.5" fill="#E07A3A" />
-              <circle cx="12.5" cy="40" r="5.5" fill="#E07A3A" />
-              <circle cx="12.5" cy="20" r="5.5" fill="#E07A3A" />
-              <circle cx="30" cy="30" r="7" fill="#E07A3A" />
+              {/* Organic starburst arms radiating from center */}
+              <g fill="#D4845A">
+                <rect x="29" y="4" width="6" height="24" rx="3" transform="rotate(0 32 32)" />
+                <rect x="29" y="4" width="6" height="24" rx="3" transform="rotate(40 32 32)" />
+                <rect x="29" y="4" width="6" height="22" rx="3" transform="rotate(80 32 32)" />
+                <rect x="29" y="4" width="6" height="24" rx="3" transform="rotate(120 32 32)" />
+                <rect x="29" y="4" width="6" height="20" rx="3" transform="rotate(155 32 32)" />
+                <rect x="29" y="4" width="6" height="24" rx="3" transform="rotate(195 32 32)" />
+                <rect x="29" y="4" width="6" height="22" rx="3" transform="rotate(235 32 32)" />
+                <rect x="29" y="4" width="6" height="24" rx="3" transform="rotate(275 32 32)" />
+                <rect x="29" y="4" width="6" height="20" rx="3" transform="rotate(315 32 32)" />
+              </g>
             </svg>
             Powered by Claude AI
           </span>
