@@ -31,10 +31,13 @@ export function Hero() {
         {/* Badge */}
         <div className="flex justify-center mb-8 animate-fade-in-up">
           <span className="inline-flex items-center gap-2 rounded-full border border-[var(--border)] bg-[var(--muted)] px-4 py-1.5 text-xs font-medium text-[var(--muted-foreground)]">
-            <span className="relative flex h-2 w-2">
-              <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-emerald-400 opacity-75" />
-              <span className="relative inline-flex h-2 w-2 rounded-full bg-emerald-500" />
-            </span>
+            <svg
+              className="h-4 w-4 animate-claude-sparkle text-[var(--accent-light)]"
+              viewBox="0 0 24 24"
+              fill="currentColor"
+            >
+              <path d="M12 2 L14 8.5 L20 7 L15.5 12 L20 17 L14 15.5 L12 22 L10 15.5 L4 17 L8.5 12 L4 7 L10 8.5 Z" />
+            </svg>
             Powered by Claude AI
           </span>
         </div>
