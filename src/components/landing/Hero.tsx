@@ -65,7 +65,7 @@ export function Hero() {
 
         {/* Subheadline */}
         <p className="mt-6 text-center text-lg md:text-xl text-[var(--muted-foreground)] max-w-2xl mx-auto leading-relaxed animate-fade-in-up-delay-1">
-          Paste a link, ask a question, get an answer with timestamps.
+          Paste a link, ask a question, get an answer with timestamps.{" "}
           <br className="hidden md:block" />
           No more scrubbing through hours of video.
         </p>
@@ -73,7 +73,7 @@ export function Hero() {
         {/* URL Input */}
         <form
           onSubmit={handleSubmit}
-          className="mt-10 max-w-3xl mx-auto animate-fade-in-up-delay-2"
+          className="mt-10 max-w-xl mx-auto animate-fade-in-up-delay-2"
         >
           <div className="relative">
             <input
@@ -206,7 +206,7 @@ function DemoAnimation() {
   return (
     <div
       ref={containerRef}
-      className="relative mt-12 max-w-3xl mx-auto animate-fade-in-up-delay-3"
+      className="relative mt-12 max-w-xl mx-auto animate-fade-in-up-delay-3"
     >
       {/* Mock input bar */}
       <div className="relative pointer-events-none" ref={inputRef}>
