@@ -73,37 +73,24 @@ export function Hero() {
         {/* URL Input */}
         <form
           onSubmit={handleSubmit}
-          className="mt-10 max-w-2xl mx-auto animate-fade-in-up-delay-2"
+          className="mt-10 max-w-3xl mx-auto animate-fade-in-up-delay-2"
         >
-          <div className="flex flex-col sm:flex-row gap-3">
-            <div className="relative flex-1">
-              <svg
-                className="absolute left-4 top-1/2 -translate-y-1/2 text-[var(--muted-foreground)]"
-                width="18"
-                height="18"
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                strokeWidth="2"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-              >
-                <path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71" />
-                <path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71" />
-              </svg>
-              <input
-                type="text"
-                value={url}
-                onChange={(e) => setUrl(e.target.value)}
-                placeholder="Paste a YouTube URL..."
-                className="w-full rounded-xl border border-[var(--border)] bg-[var(--muted)] py-3.5 pl-12 pr-4 text-sm text-[var(--foreground)] placeholder-[var(--muted-foreground)] outline-none focus:border-[var(--accent)] focus:ring-2 focus:ring-[var(--accent-glow)] transition-all"
-              />
-            </div>
+          <div className="relative">
+            <input
+              type="text"
+              value={url}
+              onChange={(e) => setUrl(e.target.value)}
+              placeholder="Paste a YouTube URL..."
+              className="w-full rounded-2xl border border-[var(--border)] bg-[var(--muted)] py-4 pl-5 pr-14 text-sm text-[var(--foreground)] placeholder-[var(--muted-foreground)] outline-none focus:border-[var(--accent)] focus:ring-2 focus:ring-[var(--accent-glow)] transition-all"
+            />
             <button
               type="submit"
-              className="rounded-xl bg-gradient-to-r from-[var(--accent)] to-[var(--accent-light)] px-6 py-3.5 text-sm font-medium text-white transition-all hover:opacity-90 hover:shadow-lg hover:shadow-[var(--accent-glow)] active:scale-[0.98] whitespace-nowrap"
+              className="absolute right-2.5 top-1/2 -translate-y-1/2 w-9 h-9 rounded-xl bg-gradient-to-r from-[var(--accent)] to-[var(--accent-light)] flex items-center justify-center text-white transition-all hover:opacity-90 hover:shadow-lg hover:shadow-[var(--accent-glow)] active:scale-[0.92]"
             >
-              Start chatting →
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                <path d="M12 19V5" />
+                <path d="M5 12l7-7 7 7" />
+              </svg>
             </button>
           </div>
           <p className="mt-3 text-center text-xs text-[var(--muted-foreground)]">
@@ -219,47 +206,34 @@ function DemoAnimation() {
   return (
     <div
       ref={containerRef}
-      className="relative mt-12 max-w-2xl mx-auto animate-fade-in-up-delay-3"
+      className="relative mt-12 max-w-3xl mx-auto animate-fade-in-up-delay-3"
     >
       {/* Mock input bar */}
-      <div className="flex flex-col sm:flex-row gap-3 pointer-events-none">
-        <div ref={inputRef} className="relative flex-1">
-          <svg
-            className="absolute left-4 top-1/2 -translate-y-1/2 text-[var(--muted-foreground)]"
-            width="18"
-            height="18"
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke="currentColor"
-            strokeWidth="2"
-            strokeLinecap="round"
-            strokeLinejoin="round"
-          >
-            <path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71" />
-            <path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71" />
-          </svg>
-          <div className="w-full rounded-xl border border-[var(--border)] bg-[var(--muted)] py-3.5 pl-12 pr-4 text-sm min-h-[48px]">
-            {displayedUrl ? (
-              <span className="text-[var(--foreground)]">
-                {displayedUrl}
-                {phase === "typing" && (
-                  <span className="inline-block w-px h-4 bg-[var(--foreground)] ml-0.5 animate-pulse align-middle" />
-                )}
-              </span>
-            ) : (
-              <span className="text-[var(--muted-foreground)]">
-                Paste a YouTube URL...
-              </span>
-            )}
-          </div>
+      <div className="relative pointer-events-none" ref={inputRef}>
+        <div className="w-full rounded-2xl border border-[var(--border)] bg-[var(--muted)] py-4 pl-5 pr-14 text-sm min-h-[54px]">
+          {displayedUrl ? (
+            <span className="text-[var(--foreground)]">
+              {displayedUrl}
+              {phase === "typing" && (
+                <span className="inline-block w-px h-4 bg-[var(--foreground)] ml-0.5 animate-pulse align-middle" />
+              )}
+            </span>
+          ) : (
+            <span className="text-[var(--muted-foreground)]">
+              Paste a YouTube URL...
+            </span>
+          )}
         </div>
         <div
           ref={buttonRef}
-          className={`rounded-xl bg-gradient-to-r from-[var(--accent)] to-[var(--accent-light)] px-6 py-3.5 text-sm font-medium text-white text-center whitespace-nowrap transition-all duration-200 ${
+          className={`absolute right-2.5 top-1/2 -translate-y-1/2 w-9 h-9 rounded-xl bg-gradient-to-r from-[var(--accent)] to-[var(--accent-light)] flex items-center justify-center text-white transition-all duration-200 ${
             isButtonHighlighted ? "shadow-lg shadow-[var(--accent-glow)] brightness-110" : ""
-          } ${phase === "clicking" ? "scale-[0.96]" : ""}`}
+          } ${phase === "clicking" ? "scale-[0.85]" : ""}`}
         >
-          Start chatting →
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+            <path d="M12 19V5" />
+            <path d="M5 12l7-7 7 7" />
+          </svg>
         </div>
       </div>
 
