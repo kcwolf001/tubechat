@@ -162,9 +162,9 @@ function DemoAnimation() {
     const input = inputRef.current.getBoundingClientRect();
     const button = buttonRef.current.getBoundingClientRect();
 
-    // Start cursor at end of typed text area
-    const startX = input.right - container.left - 20;
-    const startY = input.top - container.top + input.height / 2;
+    // Start cursor from center-bottom, below the input
+    const startX = input.left - container.left + input.width / 2;
+    const startY = input.bottom - container.top + 20;
     setCursorPos({ x: startX, y: startY });
 
     const endX = button.left - container.left + button.width / 2;
@@ -206,53 +206,60 @@ function DemoAnimation() {
   return (
     <div
       ref={containerRef}
-      className="relative mt-12 max-w-xl mx-auto animate-fade-in-up-delay-3"
+      className="relative mt-16 max-w-xl mx-auto animate-fade-in-up-delay-3"
     >
-      {/* Mock input bar */}
-      <div className="relative pointer-events-none" ref={inputRef}>
-        <div className="w-full rounded-2xl border border-[var(--border)] bg-[var(--muted)] py-4 pl-5 pr-14 text-sm min-h-[54px]">
-          {displayedUrl ? (
-            <span className="text-[var(--foreground)]">
-              {displayedUrl}
-              {phase === "typing" && (
-                <span className="inline-block w-px h-4 bg-[var(--foreground)] ml-0.5 animate-pulse align-middle" />
-              )}
-            </span>
-          ) : (
-            <span className="text-[var(--muted-foreground)]">
-              Paste a YouTube URL...
-            </span>
-          )}
-        </div>
-        <div
-          ref={buttonRef}
-          className={`absolute right-2.5 top-1/2 -translate-y-1/2 w-9 h-9 rounded-xl bg-gradient-to-r from-[var(--accent)] to-[var(--accent-light)] flex items-center justify-center text-white transition-all duration-200 ${
-            isButtonHighlighted ? "shadow-lg shadow-[var(--accent-glow)] brightness-110" : ""
-          } ${phase === "clicking" ? "scale-[0.85]" : ""}`}
-        >
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
-            <path d="M12 19V5" />
-            <path d="M5 12l7-7 7 7" />
-          </svg>
+      {/* Subtle container box */}
+      <div className="rounded-3xl border border-[var(--card-border)] bg-[var(--card)] p-6 pb-10">
+        {/* Mock input bar */}
+        <div className="relative pointer-events-none" ref={inputRef}>
+          <div className="w-full rounded-2xl border border-[var(--border)] bg-[var(--muted)] py-4 pl-5 pr-14 text-sm min-h-[54px]">
+            {displayedUrl ? (
+              <span className="text-[var(--foreground)]">
+                {displayedUrl}
+                {phase === "typing" && (
+                  <span className="inline-block w-px h-4 bg-[var(--foreground)] ml-0.5 animate-pulse align-middle" />
+                )}
+              </span>
+            ) : (
+              <span className="text-[var(--muted-foreground)]">
+                Paste a YouTube URL...
+              </span>
+            )}
+          </div>
+          <div
+            ref={buttonRef}
+            className={`absolute right-2.5 top-1/2 -translate-y-1/2 w-9 h-9 rounded-xl bg-gradient-to-r from-[var(--accent)] to-[var(--accent-light)] flex items-center justify-center text-white transition-all duration-200 ${
+              isButtonHighlighted ? "shadow-lg shadow-[var(--accent-glow)] brightness-110" : ""
+            } ${phase === "clicking" ? "scale-[0.85]" : ""}`}
+          >
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+              <path d="M12 19V5" />
+              <path d="M5 12l7-7 7 7" />
+            </svg>
+          </div>
         </div>
       </div>
 
-      {/* Animated cursor */}
+      {/* Animated macOS-style cursor */}
       {cursorPos && (
         <div
           className="absolute z-10 transition-all duration-500 ease-in-out"
           style={{ left: cursorPos.x, top: cursorPos.y }}
         >
           <svg
-            width="20"
-            height="20"
-            viewBox="0 0 24 24"
-            fill="white"
-            stroke="var(--background)"
-            strokeWidth="1"
-            className="drop-shadow-lg"
+            width="28"
+            height="28"
+            viewBox="0 0 28 28"
+            fill="none"
+            className="drop-shadow-[0_2px_4px_rgba(0,0,0,0.4)]"
           >
-            <path d="M5 3l14 8.5L12 14l-2.5 7.5L5 3z" />
+            <path
+              d="M5.5 2L7.5 21L12 15.5L18.5 16.5L5.5 2Z"
+              fill="white"
+              stroke="black"
+              strokeWidth="1.2"
+              strokeLinejoin="round"
+            />
           </svg>
         </div>
       )}
