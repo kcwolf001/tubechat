@@ -1,0 +1,739 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>TubeChat — Landing Page Preview</title>
+<link href="https://api.fontshare.com/v2/css?f[]=cabinet-grotesk@100,200,300,400,500,700,800,900&f[]=satoshi@300,400,500,700,900&display=swap" rel="stylesheet" />
+<style>
+  :root {
+    --bg: #0a0a0b;
+    --bg2: #111113;
+    --bg3: #1a1a1c;
+    --surface: #141416;
+    --surface-h: #1e1e21;
+    --border: #2a2a2e;
+    --border-s: #1e1e21;
+    --t1: #fafafa;
+    --t2: #a3a3a3;
+    --t3: #636366;
+    --brand: #fb923c;
+    --brand-d: #f97316;
+    --brand-dd: #ea580c;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; border-color: var(--border); }
+  html { scroll-behavior: smooth; }
+  body {
+    font-family: 'Satoshi', 'General Sans', system-ui, sans-serif;
+    background: var(--bg);
+    color: var(--t1);
+    -webkit-font-smoothing: antialiased;
+    overflow-x: hidden;
+  }
+  ::selection { background: rgba(249,115,22,0.2); }
+  .font-display { font-family: 'Cabinet Grotesk', 'Satoshi', system-ui, sans-serif; }
+
+  /* Animations */
+  @keyframes fadeInUp {
+    from { opacity: 0; transform: translateY(24px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  @keyframes typing {
+    from { width: 0; }
+    to { width: 100%; }
+  }
+  @keyframes blink { 50% { border-color: transparent; } }
+  .animate-in {
+    opacity: 0;
+    animation: fadeInUp 0.7s ease-out forwards;
+  }
+  .d1 { animation-delay: 0.1s; }
+  .d2 { animation-delay: 0.2s; }
+  .d3 { animation-delay: 0.35s; }
+  .d4 { animation-delay: 0.5s; }
+  .d5 { animation-delay: 0.7s; }
+  .d6 { animation-delay: 0.85s; }
+
+  /* Text gradient */
+  .text-gradient {
+    background: linear-gradient(135deg, #fb923c 0%, #f97316 50%, #ea580c 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  /* Grid bg */
+  .bg-grid {
+    background-image: linear-gradient(var(--border-s) 1px, transparent 1px),
+      linear-gradient(90deg, var(--border-s) 1px, transparent 1px);
+    background-size: 64px 64px;
+    opacity: 0.03;
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+  }
+
+  /* NAV */
+  nav {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 50;
+    backdrop-filter: blur(20px);
+    background: rgba(10,10,11,0.8);
+    border-bottom: 1px solid transparent;
+    transition: border-color 0.3s;
+  }
+  nav.scrolled { border-bottom-color: var(--border-s); }
+  .nav-inner {
+    max-width: 72rem; margin: 0 auto; padding: 0 1.5rem;
+    height: 64px; display: flex; align-items: center; justify-content: space-between;
+  }
+  .logo { display: flex; align-items: center; gap: 0.6rem; text-decoration: none; color: var(--t1); }
+  .logo-icon {
+    width: 32px; height: 32px; border-radius: 8px;
+    background: linear-gradient(135deg, var(--brand), var(--brand-dd));
+    display: flex; align-items: center; justify-content: center;
+    box-shadow: 0 4px 12px rgba(249,115,22,0.2);
+  }
+  .logo-icon svg { width: 16px; height: 16px; fill: white; margin-left: 2px; }
+  .logo span { font-family: 'Cabinet Grotesk', sans-serif; font-weight: 700; font-size: 1.1rem; letter-spacing: -0.02em; }
+  .nav-links { display: flex; align-items: center; gap: 2rem; }
+  .nav-links a { font-size: 0.875rem; color: var(--t2); text-decoration: none; transition: color 0.2s; }
+  .nav-links a:hover { color: var(--t1); }
+  .nav-cta { display: flex; align-items: center; gap: 0.75rem; }
+  .btn-ghost { font-size: 0.875rem; color: var(--t2); background: none; border: none; cursor: pointer; padding: 6px 12px; }
+  .btn-primary {
+    font-size: 0.875rem; font-weight: 500; color: white;
+    background: linear-gradient(180deg, var(--brand), var(--brand-d));
+    border: none; padding: 8px 16px; border-radius: 8px; cursor: pointer;
+    box-shadow: 0 4px 12px rgba(249,115,22,0.25);
+    transition: box-shadow 0.2s, transform 0.1s;
+  }
+  .btn-primary:hover { box-shadow: 0 6px 20px rgba(249,115,22,0.4); }
+  .btn-primary:active { transform: scale(0.98); }
+  .btn-primary-lg {
+    font-size: 1rem; padding: 14px 32px; border-radius: 12px;
+    box-shadow: 0 8px 24px rgba(249,115,22,0.25);
+    display: inline-flex; align-items: center; gap: 8px;
+  }
+  .btn-secondary-lg {
+    font-size: 1rem; padding: 14px 32px; border-radius: 12px;
+    background: var(--surface); border: 1px solid var(--border);
+    color: var(--t2); cursor: pointer; transition: all 0.2s;
+  }
+  .btn-secondary-lg:hover { background: var(--surface-h); color: var(--t1); }
+
+  /* HERO */
+  .hero {
+    min-height: 100vh; display: flex; flex-direction: column;
+    align-items: center; justify-content: center;
+    padding: 6rem 1.5rem 4rem; position: relative; overflow: hidden;
+  }
+  .hero-glow {
+    position: absolute; top: 0; left: 50%; transform: translateX(-50%);
+    width: 800px; height: 600px;
+    background: radial-gradient(circle, rgba(249,115,22,0.07), transparent 70%);
+    pointer-events: none;
+  }
+  .badge {
+    display: inline-flex; align-items: center; gap: 8px;
+    padding: 6px 14px; border-radius: 100px;
+    border: 1px solid var(--border); background: var(--surface);
+    font-size: 0.75rem; color: var(--t2);
+  }
+  .badge .brand { color: var(--brand); font-weight: 500; }
+  h1 {
+    font-family: 'Cabinet Grotesk', sans-serif;
+    font-size: clamp(2.75rem, 6vw, 4.5rem);
+    font-weight: 700; line-height: 1.1; letter-spacing: -0.03em;
+    text-align: center; margin-top: 2rem;
+  }
+  .hero-sub {
+    margin-top: 1.5rem; font-size: 1.15rem; color: var(--t2);
+    text-align: center; max-width: 38rem; line-height: 1.7;
+  }
+  .hero-sub strong { color: var(--t1); font-weight: 500; }
+
+  /* URL INPUT */
+  .url-input-wrap {
+    margin-top: 3rem; width: 100%; max-width: 40rem; position: relative;
+  }
+  .url-input-glow {
+    position: absolute; inset: -2px; border-radius: 16px;
+    background: linear-gradient(90deg, rgba(251,146,60,0.15), rgba(249,115,22,0.05), rgba(251,146,60,0.15));
+    filter: blur(4px); opacity: 0; transition: opacity 0.5s;
+  }
+  .url-input-wrap:hover .url-input-glow { opacity: 1; }
+  .url-input {
+    position: relative; display: flex; align-items: center; gap: 12px;
+    background: var(--surface); border: 1px solid var(--border);
+    border-radius: 12px; padding: 16px 20px;
+    box-shadow: 0 20px 60px rgba(0,0,0,0.15);
+  }
+  .yt-icon {
+    flex-shrink: 0; width: 32px; height: 32px; border-radius: 8px;
+    background: rgba(239,68,68,0.1); display: flex; align-items: center; justify-content: center;
+  }
+  .yt-icon svg { width: 16px; height: 16px; }
+  .url-text {
+    flex: 1; font-family: 'JetBrains Mono', monospace; font-size: 0.875rem;
+    color: var(--t1); background: none; border: none; outline: none;
+    overflow: hidden; white-space: nowrap;
+  }
+  .url-text::after {
+    content: '|'; animation: blink 1s step-end infinite; color: var(--brand);
+  }
+  .start-btn {
+    flex-shrink: 0; display: flex; align-items: center; gap: 8px;
+    padding: 10px 20px; border-radius: 8px; border: none;
+    font-size: 0.875rem; font-weight: 500; cursor: pointer;
+    background: linear-gradient(180deg, var(--brand), var(--brand-d));
+    color: white; box-shadow: 0 4px 12px rgba(249,115,22,0.25);
+    transition: all 0.2s;
+  }
+  .start-btn:hover { box-shadow: 0 6px 20px rgba(249,115,22,0.4); }
+  .url-hint { text-align: center; margin-top: 12px; font-size: 0.75rem; color: var(--t3); }
+
+  /* CHAT MOCKUP */
+  .chat-mock {
+    margin-top: 4rem; width: 100%; max-width: 48rem; position: relative;
+  }
+  .chat-mock-glow {
+    position: absolute; inset: -16px;
+    background: linear-gradient(180deg, rgba(251,146,60,0.04), transparent);
+    border-radius: 24px; filter: blur(16px); pointer-events: none;
+  }
+  .chat-card {
+    position: relative; background: var(--surface); border: 1px solid var(--border);
+    border-radius: 16px; overflow: hidden;
+    box-shadow: 0 20px 60px rgba(0,0,0,0.2);
+  }
+  .chat-chrome {
+    display: flex; align-items: center; gap: 8px;
+    padding: 12px 16px; border-bottom: 1px solid var(--border-s);
+    background: var(--bg2);
+  }
+  .dot { width: 12px; height: 12px; border-radius: 50%; }
+  .dot-r { background: #ff5f57; }
+  .dot-y { background: #ffbd2e; }
+  .dot-g { background: #28c840; }
+  .chrome-url {
+    flex: 1; text-align: center; font-family: monospace;
+    font-size: 0.7rem; color: var(--t3);
+  }
+  .chat-body { padding: 24px; }
+  .video-header {
+    display: flex; gap: 12px; padding-bottom: 16px;
+    border-bottom: 1px solid var(--border-s); margin-bottom: 20px;
+  }
+  .video-thumb {
+    width: 112px; height: 64px; border-radius: 8px;
+    background: var(--bg3); display: flex; align-items: center; justify-content: center;
+    flex-shrink: 0;
+  }
+  .video-thumb svg { width: 32px; height: 32px; fill: var(--t3); opacity: 0.3; }
+  .video-meta h3 { font-size: 0.875rem; font-weight: 500; }
+  .video-meta p { font-size: 0.7rem; color: var(--t3); margin-top: 4px; }
+  .user-msg {
+    display: flex; justify-content: flex-end; margin-bottom: 20px;
+  }
+  .user-bubble {
+    background: linear-gradient(180deg, var(--brand), var(--brand-d));
+    color: white; font-size: 0.875rem; padding: 10px 16px;
+    border-radius: 16px 16px 4px 16px; max-width: 24rem;
+    box-shadow: 0 2px 8px rgba(249,115,22,0.15);
+  }
+  .ai-msg { display: flex; gap: 12px; align-items: flex-start; }
+  .ai-avatar {
+    width: 28px; height: 28px; border-radius: 8px; flex-shrink: 0;
+    background: linear-gradient(135deg, rgba(251,146,60,0.15), rgba(249,115,22,0.15));
+    display: flex; align-items: center; justify-content: center;
+    margin-top: 2px;
+  }
+  .ai-avatar svg { width: 14px; height: 14px; fill: var(--brand); }
+  .ai-text { font-size: 0.875rem; color: var(--t2); line-height: 1.7; }
+  .ai-text strong { color: var(--t1); font-weight: 500; }
+  .timestamp {
+    display: inline-flex; align-items: center; gap: 4px;
+    color: var(--brand); font-family: monospace; font-size: 0.7rem;
+    cursor: pointer; transition: color 0.2s;
+  }
+  .timestamp:hover { color: #fdba74; }
+  .timestamp svg { width: 12px; height: 12px; fill: none; stroke: currentColor; stroke-width: 2; }
+  .chat-fade {
+    height: 48px;
+    background: linear-gradient(transparent, var(--surface));
+  }
+
+  /* STATS ROW */
+  .stats {
+    display: flex; flex-wrap: wrap; align-items: center; justify-content: center;
+    gap: 2rem; margin-top: 4rem; font-size: 0.875rem; color: var(--t3);
+  }
+  .stats svg { width: 16px; height: 16px; stroke: var(--brand); fill: none; stroke-width: 2; }
+  .stat { display: flex; align-items: center; gap: 8px; }
+  .stat-div { width: 1px; height: 16px; background: var(--border); }
+
+  /* FEATURES */
+  .section { padding: 8rem 1.5rem; }
+  .section-alt { background: var(--bg2); position: relative; }
+  .section-header { text-align: center; margin-bottom: 4rem; }
+  .section-label {
+    font-size: 0.8rem; font-weight: 500; color: var(--brand);
+    text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: 0.75rem;
+  }
+  .section-title {
+    font-family: 'Cabinet Grotesk', sans-serif;
+    font-size: clamp(1.75rem, 4vw, 3rem);
+    font-weight: 700; letter-spacing: -0.03em; line-height: 1.2;
+  }
+  .section-title .muted { color: var(--t3); }
+  .section-sub { margin-top: 1rem; color: var(--t2); max-width: 32rem; margin-left: auto; margin-right: auto; }
+
+  .features-grid {
+    max-width: 72rem; margin: 0 auto;
+    display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px;
+  }
+  .feat-card {
+    padding: 24px; border-radius: 16px;
+    border: 1px solid var(--border); background: var(--surface);
+    transition: background 0.3s;
+  }
+  .feat-card:hover { background: var(--surface-h); }
+  .feat-card.span2 { grid-column: span 2; }
+  .feat-icon {
+    width: 40px; height: 40px; border-radius: 12px;
+    display: flex; align-items: center; justify-content: center;
+    margin-bottom: 16px;
+  }
+  .feat-icon svg { width: 20px; height: 20px; stroke-width: 1.5; }
+  .feat-card h3 { font-family: 'Cabinet Grotesk', sans-serif; font-weight: 600; font-size: 1.1rem; margin-bottom: 8px; }
+  .feat-card p { font-size: 0.875rem; color: var(--t2); line-height: 1.6; }
+
+  /* HOW IT WORKS */
+  .steps-grid {
+    max-width: 72rem; margin: 0 auto;
+    display: grid; grid-template-columns: repeat(3, 1fr); gap: 2rem;
+  }
+  .step { text-align: center; }
+  .step-icon {
+    display: inline-flex; width: 80px; height: 80px; border-radius: 16px;
+    border: 1px solid var(--border); background: var(--surface);
+    align-items: center; justify-content: center; margin-bottom: 1.5rem;
+    transition: border-color 0.3s, box-shadow 0.3s;
+  }
+  .step:hover .step-icon {
+    border-color: rgba(249,115,22,0.3);
+    box-shadow: 0 8px 24px rgba(249,115,22,0.05);
+  }
+  .step-icon svg { width: 32px; height: 32px; stroke: var(--brand); fill: none; stroke-width: 1.5; }
+  .step-num { font-family: monospace; font-size: 0.7rem; color: var(--brand); letter-spacing: 0.15em; margin-bottom: 8px; }
+  .step h3 { font-family: 'Cabinet Grotesk', sans-serif; font-weight: 600; font-size: 1.2rem; margin-bottom: 12px; }
+  .step p { font-size: 0.875rem; color: var(--t2); line-height: 1.6; }
+  .step .detail { font-size: 0.75rem; color: var(--t3); margin-top: 8px; }
+
+  /* COMPARISON */
+  .comp-table {
+    max-width: 56rem; margin: 0 auto;
+    border: 1px solid var(--border); border-radius: 16px;
+    overflow: hidden; background: var(--surface);
+  }
+  .comp-header {
+    display: grid; grid-template-columns: 2fr 1fr 1fr 1fr; gap: 16px;
+    padding: 16px 24px; border-bottom: 1px solid var(--border);
+    background: var(--bg2); font-size: 0.875rem;
+  }
+  .comp-header > :first-child { color: var(--t3); font-weight: 500; }
+  .comp-header .hl { color: var(--brand); font-weight: 600; text-align: center; }
+  .comp-header > :not(:first-child):not(.hl) { color: var(--t3); font-weight: 500; text-align: center; }
+  .comp-row {
+    display: grid; grid-template-columns: 2fr 1fr 1fr 1fr; gap: 16px;
+    padding: 14px 24px; align-items: center;
+    border-bottom: 1px solid var(--border-s);
+  }
+  .comp-row:last-child { border-bottom: none; }
+  .comp-row > :first-child { font-size: 0.875rem; color: var(--t2); }
+  .check, .cross, .partial {
+    width: 24px; height: 24px; border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    margin: 0 auto;
+  }
+  .check { background: rgba(52,211,153,0.1); }
+  .check svg { width: 14px; height: 14px; stroke: #34d399; fill: none; stroke-width: 2.5; }
+  .cross { background: var(--bg3); }
+  .cross svg { width: 14px; height: 14px; stroke: var(--t3); fill: none; stroke-width: 2.5; }
+  .partial { background: rgba(251,191,36,0.1); }
+  .partial svg { width: 14px; height: 14px; stroke: #fbbf24; fill: none; stroke-width: 2.5; }
+
+  /* CTA */
+  .cta { text-align: center; position: relative; overflow: hidden; }
+  .cta-glow {
+    position: absolute; top: 50%; left: 50%; transform: translate(-50%,-50%);
+    width: 600px; height: 600px;
+    background: radial-gradient(circle, rgba(249,115,22,0.06), transparent 70%);
+    pointer-events: none;
+  }
+  .cta-badge {
+    display: inline-flex; padding: 8px 16px; border-radius: 100px;
+    border: 1px solid rgba(249,115,22,0.2); background: rgba(249,115,22,0.05);
+    font-size: 0.875rem; color: var(--brand); font-weight: 500;
+    margin-bottom: 2rem;
+  }
+  .cta-buttons { display: flex; gap: 16px; justify-content: center; margin-top: 2.5rem; flex-wrap: wrap; }
+  .trust { display: flex; gap: 1.5rem; justify-content: center; margin-top: 3rem; font-size: 0.75rem; color: var(--t3); flex-wrap: wrap; }
+
+  /* FOOTER */
+  footer {
+    border-top: 1px solid var(--border-s); padding: 3rem 1.5rem;
+  }
+  .footer-inner {
+    max-width: 72rem; margin: 0 auto;
+    display: flex; justify-content: space-between; align-items: flex-start;
+    flex-wrap: wrap; gap: 2rem;
+  }
+  .footer-brand p { font-size: 0.875rem; color: var(--t3); max-width: 18rem; margin-top: 8px; }
+  .footer-links { display: flex; gap: 2rem; flex-wrap: wrap; }
+  .footer-links a { font-size: 0.875rem; color: var(--t3); text-decoration: none; transition: color 0.2s; }
+  .footer-links a:hover { color: var(--t2); }
+  .footer-bottom {
+    max-width: 72rem; margin: 2rem auto 0;
+    padding-top: 2rem; border-top: 1px solid var(--border-s);
+    display: flex; justify-content: space-between; font-size: 0.7rem; color: var(--t3);
+    flex-wrap: wrap; gap: 1rem;
+  }
+
+  /* Responsive */
+  @media (max-width: 768px) {
+    .nav-links, .nav-cta { display: none; }
+    .features-grid { grid-template-columns: 1fr; }
+    .feat-card.span2 { grid-column: span 1; }
+    .steps-grid { grid-template-columns: 1fr; gap: 3rem; }
+    .comp-table { font-size: 0.8rem; }
+    .comp-header, .comp-row { padding: 12px 16px; gap: 8px; }
+  }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav id="navbar">
+  <div class="nav-inner">
+    <a href="#" class="logo">
+      <div class="logo-icon">
+        <svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
+      </div>
+      <span class="font-display">TubeChat</span>
+    </a>
+    <div class="nav-links">
+      <a href="#features">Features</a>
+      <a href="#how-it-works">How It Works</a>
+      <a href="#pricing">Pricing</a>
+    </div>
+    <div class="nav-cta">
+      <button class="btn-ghost">Log in</button>
+      <button class="btn-primary">Get Started Free</button>
+    </div>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="bg-grid"></div>
+  <div class="hero-glow"></div>
+
+  <div class="badge animate-in d1">
+    <span style="color:var(--brand)">✦</span>
+    Powered by Claude AI
+    <span style="color:var(--t3)">·</span>
+    <span class="brand">Free to start</span>
+  </div>
+
+  <h1 class="animate-in d2">
+    Talk to any<br>
+    <span class="text-gradient">YouTube video</span>
+  </h1>
+
+  <p class="hero-sub animate-in d3">
+    Paste a link. Ask anything. Get instant answers with
+    <strong>timestamped citations</strong>
+    that jump straight to the right moment.
+  </p>
+
+  <!-- URL input -->
+  <div class="url-input-wrap animate-in d4">
+    <div class="url-input-glow"></div>
+    <div class="url-input">
+      <div class="yt-icon">
+        <svg viewBox="0 0 24 24" fill="#ef4444">
+          <path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814z"/>
+          <path fill="#fff" d="M9.545 15.568V8.432L15.818 12l-6.273 3.568z"/>
+        </svg>
+      </div>
+      <div class="url-text" id="url-text"></div>
+      <button class="start-btn" id="start-btn">
+        Start Chat
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+      </button>
+    </div>
+    <p class="url-hint">Works with any public YouTube video · No credit card required</p>
+  </div>
+
+  <!-- Chat mockup -->
+  <div class="chat-mock animate-in d5">
+    <div class="chat-mock-glow"></div>
+    <div class="chat-card">
+      <div class="chat-chrome">
+        <div style="display:flex;gap:6px">
+          <div class="dot dot-r"></div>
+          <div class="dot dot-y"></div>
+          <div class="dot dot-g"></div>
+        </div>
+        <div class="chrome-url">tubechat.ai/chat</div>
+        <div style="width:48px"></div>
+      </div>
+      <div class="chat-body">
+        <div class="video-header">
+          <div class="video-thumb">
+            <svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
+          </div>
+          <div class="video-meta">
+            <h3>How to Build a Startup in 2025 — Y Combinator</h3>
+            <p>48:32 · 1.2M views · Transcript ready</p>
+          </div>
+        </div>
+        <div class="user-msg">
+          <div class="user-bubble">What are the 3 biggest mistakes first-time founders make?</div>
+        </div>
+        <div class="ai-msg">
+          <div class="ai-avatar">
+            <svg viewBox="0 0 24 24"><path d="M12 3l1.5 4.5H18l-3.5 2.5L16 14.5 12 11.5 8 14.5l1.5-4.5L6 7.5h4.5z"/></svg>
+          </div>
+          <div class="ai-text">
+            <p style="margin-bottom:8px">According to the talk, the three biggest mistakes are:</p>
+            <p style="margin-bottom:8px">
+              <strong>1. Building without talking to users</strong> — The speaker emphasizes that most failed startups built what they assumed people wanted
+              <span class="timestamp">
+                <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
+                12:45
+              </span>
+            </p>
+            <p style="margin-bottom:8px">
+              <strong>2. Scaling too early</strong> — Hiring and spending before finding product-market fit
+              <span class="timestamp">
+                <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
+                24:18
+              </span>
+            </p>
+            <p>
+              <strong>3. Ignoring distribution</strong> — "The best product doesn't always win — the best distributed one does"
+              <span class="timestamp">
+                <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
+                35:02
+              </span>
+            </p>
+          </div>
+        </div>
+      </div>
+      <div class="chat-fade"></div>
+    </div>
+  </div>
+
+  <!-- Stats -->
+  <div class="stats animate-in d6">
+    <div class="stat">
+      <svg viewBox="0 0 24 24"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+      10K+ conversations
+    </div>
+    <div class="stat-div"></div>
+    <div class="stat">
+      <svg viewBox="0 0 24 24"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg>
+      ~2s response time
+    </div>
+    <div class="stat-div"></div>
+    <div class="stat">Free forever plan</div>
+  </div>
+</section>
+
+<!-- FEATURES -->
+<section id="features" class="section">
+  <div class="section-header">
+    <div class="section-label">Features</div>
+    <div class="section-title font-display">Everything you need.<br><span class="muted">Nothing you don't.</span></div>
+  </div>
+  <div class="features-grid">
+    <div class="feat-card span2">
+      <div class="feat-icon" style="background:rgba(245,158,11,0.1)">
+        <svg viewBox="0 0 24 24" fill="none" stroke="#f59e0b"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
+      </div>
+      <h3 class="font-display">Timestamped Citations</h3>
+      <p>Every answer links back to the exact moment in the video. Click a timestamp and jump right there.</p>
+    </div>
+    <div class="feat-card">
+      <div class="feat-icon" style="background:rgba(139,92,246,0.1)">
+        <svg viewBox="0 0 24 24" fill="none" stroke="#8b5cf6"><path d="M12 3l1.5 4.5H18l-3.5 2.5L16 14.5 12 11.5 8 14.5l1.5-4.5L6 7.5h4.5z"/></svg>
+      </div>
+      <h3 class="font-display">One-Click Summaries</h3>
+      <p>Get a structured summary of any video in seconds. Key points, takeaways, and action items — instantly.</p>
+    </div>
+    <div class="feat-card">
+      <div class="feat-icon" style="background:rgba(6,182,212,0.1)">
+        <svg viewBox="0 0 24 24" fill="none" stroke="#06b6d4"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+      </div>
+      <h3 class="font-display">Natural Conversation</h3>
+      <p>Ask follow-up questions, drill into details, and explore ideas — like chatting with someone who watched the whole thing.</p>
+    </div>
+    <div class="feat-card">
+      <div class="feat-icon" style="background:rgba(52,211,153,0.1)">
+        <svg viewBox="0 0 24 24" fill="none" stroke="#34d399"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/></svg>
+      </div>
+      <h3 class="font-display">Saved Conversations</h3>
+      <p>Every chat is saved to your account. Pick up where you left off or revisit insights from videos you explored weeks ago.</p>
+    </div>
+    <div class="feat-card span2">
+      <div class="feat-icon" style="background:rgba(249,115,22,0.1)">
+        <svg viewBox="0 0 24 24" fill="none" stroke="#f97316"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6M16 13H8M16 17H8M10 9H8"/></svg>
+      </div>
+      <h3 class="font-display">Smart Context Retrieval</h3>
+      <p>For long videos, we don't just dump the whole transcript — we find the most relevant sections for your specific question.</p>
+    </div>
+  </div>
+</section>
+
+<!-- HOW IT WORKS -->
+<section id="how-it-works" class="section section-alt">
+  <div class="bg-grid"></div>
+  <div style="position:relative">
+    <div class="section-header">
+      <div class="section-label">How It Works</div>
+      <div class="section-title font-display">Three steps.<br><span class="muted">That's it.</span></div>
+    </div>
+    <div class="steps-grid">
+      <div class="step">
+        <div class="step-icon">
+          <svg viewBox="0 0 24 24"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>
+        </div>
+        <div class="step-num">STEP 01</div>
+        <h3 class="font-display">Paste a YouTube link</h3>
+        <p>Drop any public YouTube URL into TubeChat. We'll fetch the full transcript with timestamps in seconds.</p>
+        <p class="detail">Works with any video that has captions or auto-generated subtitles.</p>
+      </div>
+      <div class="step">
+        <div class="step-icon">
+          <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 8v4l3 3"/><path d="M8 3h8M8 21h8"/></svg>
+        </div>
+        <div class="step-num">STEP 02</div>
+        <h3 class="font-display">AI processes the video</h3>
+        <p>Our AI reads the entire transcript and builds a searchable understanding of the content — topics, structure, key moments.</p>
+        <p class="detail">Smart chunking means even 3-hour podcasts work perfectly.</p>
+      </div>
+      <div class="step">
+        <div class="step-icon">
+          <svg viewBox="0 0 24 24"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+        </div>
+        <div class="step-num">STEP 03</div>
+        <h3 class="font-display">Ask anything</h3>
+        <p>Chat naturally. Ask questions, request summaries, explore ideas. Every answer includes clickable timestamps back to the source.</p>
+        <p class="detail">Follow-up questions understand the context of your conversation.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- COMPARISON -->
+<section class="section">
+  <div class="section-header">
+    <div class="section-label">Comparison</div>
+    <div class="section-title font-display">Built different.</div>
+    <p class="section-sub">Most tools in this space are basic Chrome extensions. TubeChat is a full-featured web app designed from the ground up.</p>
+  </div>
+  <div class="comp-table">
+    <div class="comp-header">
+      <div>Feature</div>
+      <div class="hl">TubeChat</div>
+      <div>Extensions</div>
+      <div>YouTube AI</div>
+    </div>
+    <div class="comp-row"><div>Standalone web app</div><div class="check"><svg viewBox="0 0 24 24"><path d="M20 6L9 17l-5-5"/></svg></div><div class="cross"><svg viewBox="0 0 24 24"><path d="M18 6L6 18M6 6l12 12"/></svg></div><div class="check"><svg viewBox="0 0 24 24"><path d="M20 6L9 17l-5-5"/></svg></div></div>
+    <div class="comp-row"><div>Works on mobile</div><div class="check"><svg viewBox="0 0 24 24"><path d="M20 6L9 17l-5-5"/></svg></div><div class="cross"><svg viewBox="0 0 24 24"><path d="M18 6L6 18M6 6l12 12"/></svg></div><div class="partial"><svg viewBox="0 0 24 24"><path d="M5 12h14"/></svg></div></div>
+    <div class="comp-row"><div>Clickable timestamps</div><div class="check"><svg viewBox="0 0 24 24"><path d="M20 6L9 17l-5-5"/></svg></div><div class="partial"><svg viewBox="0 0 24 24"><path d="M5 12h14"/></svg></div><div class="cross"><svg viewBox="0 0 24 24"><path d="M18 6L6 18M6 6l12 12"/></svg></div></div>
+    <div class="comp-row"><div>Embedded video player</div><div class="check"><svg viewBox="0 0 24 24"><path d="M20 6L9 17l-5-5"/></svg></div><div class="cross"><svg viewBox="0 0 24 24"><path d="M18 6L6 18M6 6l12 12"/></svg></div><div class="check"><svg viewBox="0 0 24 24"><path d="M20 6L9 17l-5-5"/></svg></div></div>
+    <div class="comp-row"><div>Saved chat history</div><div class="check"><svg viewBox="0 0 24 24"><path d="M20 6L9 17l-5-5"/></svg></div><div class="partial"><svg viewBox="0 0 24 24"><path d="M5 12h14"/></svg></div><div class="cross"><svg viewBox="0 0 24 24"><path d="M18 6L6 18M6 6l12 12"/></svg></div></div>
+    <div class="comp-row"><div>One-click summaries</div><div class="check"><svg viewBox="0 0 24 24"><path d="M20 6L9 17l-5-5"/></svg></div><div class="check"><svg viewBox="0 0 24 24"><path d="M20 6L9 17l-5-5"/></svg></div><div class="cross"><svg viewBox="0 0 24 24"><path d="M18 6L6 18M6 6l12 12"/></svg></div></div>
+    <div class="comp-row"><div>Dark mode</div><div class="check"><svg viewBox="0 0 24 24"><path d="M20 6L9 17l-5-5"/></svg></div><div class="partial"><svg viewBox="0 0 24 24"><path d="M5 12h14"/></svg></div><div class="cross"><svg viewBox="0 0 24 24"><path d="M18 6L6 18M6 6l12 12"/></svg></div></div>
+    <div class="comp-row"><div>Free tier</div><div class="check"><svg viewBox="0 0 24 24"><path d="M20 6L9 17l-5-5"/></svg></div><div class="check"><svg viewBox="0 0 24 24"><path d="M20 6L9 17l-5-5"/></svg></div><div class="check"><svg viewBox="0 0 24 24"><path d="M20 6L9 17l-5-5"/></svg></div></div>
+  </div>
+</section>
+
+<!-- CTA -->
+<section id="pricing" class="section section-alt cta">
+  <div class="cta-glow"></div>
+  <div style="position:relative;max-width:48rem;margin:0 auto">
+    <div class="cta-badge">Free while in beta · No credit card required</div>
+    <div class="section-title font-display" style="font-size:clamp(2rem,5vw,3.5rem)">
+      Stop scrubbing.<br><span class="text-gradient">Start asking.</span>
+    </div>
+    <p class="section-sub" style="font-size:1.1rem">
+      Join thousands of students, researchers, and creators who are already learning smarter with TubeChat.
+    </p>
+    <div class="cta-buttons">
+      <button class="btn-primary btn-primary-lg">
+        Get Started Free
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+      </button>
+      <button class="btn-secondary-lg">Try Demo</button>
+    </div>
+    <div class="trust">
+      <span>✦ No credit card</span>
+      <span>✦ Free forever plan</span>
+      <span>✦ Cancel anytime</span>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-inner">
+    <div class="footer-brand">
+      <a href="#" class="logo" style="margin-bottom:0">
+        <div class="logo-icon" style="width:28px;height:28px;border-radius:8px">
+          <svg viewBox="0 0 24 24" style="width:14px;height:14px"><path d="M8 5v14l11-7z"/></svg>
+        </div>
+        <span class="font-display" style="font-size:1rem">TubeChat</span>
+      </a>
+      <p>Talk to any YouTube video. Get instant answers with timestamped citations.</p>
+    </div>
+    <div class="footer-links">
+      <a href="#features">Features</a>
+      <a href="#how-it-works">How It Works</a>
+      <a href="#pricing">Pricing</a>
+      <a href="#">Privacy</a>
+      <a href="#">Terms</a>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <span>© 2025 TubeChat. All rights reserved.</span>
+    <span>Powered by Claude AI · Not affiliated with YouTube</span>
+  </div>
+</footer>
+
+<script>
+  // Navbar scroll effect
+  window.addEventListener('scroll', () => {
+    document.getElementById('navbar').classList.toggle('scrolled', window.scrollY > 20);
+  });
+
+  // Typing animation
+  const url = 'https://youtube.com/watch?v=dQw4w9WgXcQ';
+  const el = document.getElementById('url-text');
+  let i = 0;
+  const interval = setInterval(() => {
+    if (i <= url.length) {
+      el.textContent = url.slice(0, i);
+      i++;
+    } else {
+      clearInterval(interval);
+    }
+  }, 45);
+</script>
+
+</body>
+</html>

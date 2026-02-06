@@ -1,36 +1,70 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# 🎬 TubeChat — Talk to Any YouTube Video
 
-## Getting Started
+Paste a YouTube URL and start a conversation. Get instant answers, summaries, and timestamped citations powered by AI.
 
-First, run the development server:
+## Quick Start
+
+### Prerequisites
+- **Node.js 18+** — Download from [nodejs.org](https://nodejs.org) (get the LTS version)
+- **npm** — Comes bundled with Node.js
+
+### Setup (copy-paste these commands)
 
 ```bash
+# 1. Navigate to the project folder
+cd tubechat
+
+# 2. Install dependencies
+npm install
+
+# 3. Copy the environment file
+cp .env.local.example .env.local
+
+# 4. Start the dev server
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Then open **http://localhost:3000** in your browser.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+> **Note:** The landing page works immediately with no API keys. You'll only need API keys when we build the chat functionality in Phase 2+.
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+### API Keys (needed later for chat)
+- **Anthropic API Key** — Sign up at [console.anthropic.com](https://console.anthropic.com)
+- **Supabase** — Create a free project at [supabase.com](https://supabase.com)
 
-## Learn More
+## Project Structure
 
-To learn more about Next.js, take a look at the following resources:
+```
+tubechat/
+├── src/
+│   ├── app/                  # Next.js pages
+│   │   ├── layout.tsx        # Root layout (fonts, metadata)
+│   │   ├── globals.css       # Global styles + theme
+│   │   └── page.tsx          # Landing page
+│   ├── components/
+│   │   ├── landing/          # Landing page sections
+│   │   │   ├── Navbar.tsx
+│   │   │   ├── Hero.tsx
+│   │   │   ├── Features.tsx
+│   │   │   ├── HowItWorks.tsx
+│   │   │   ├── Comparison.tsx
+│   │   │   ├── CTA.tsx
+│   │   │   └── Footer.tsx
+│   │   └── ui/               # Reusable UI components (coming)
+│   ├── lib/                  # Utilities (coming)
+│   └── types/                # TypeScript types (coming)
+├── public/                   # Static assets
+├── package.json
+├── tailwind.config.ts
+├── tsconfig.json
+└── .env.local.example
+```
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## Build Phases
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+- [x] **Phase 1** — Project setup + Landing page
+- [ ] **Phase 2** — YouTube URL input + Transcript fetching
+- [ ] **Phase 3** — Chat interface with embedded video player
+- [ ] **Phase 4** — Supabase auth + User accounts
+- [ ] **Phase 5** — Chat history + Saved videos
+- [ ] **Phase 6** — Polish + Deploy to Vercel
