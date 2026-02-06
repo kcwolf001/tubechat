@@ -209,7 +209,7 @@ function DemoAnimation() {
       className="relative mt-24 max-w-xl mx-auto animate-fade-in-up-delay-3"
     >
       {/* Subtle container box */}
-      <div className="rounded-3xl border border-[var(--border)]/40 bg-[var(--muted)]/40 p-6 pb-20">
+      <div className="rounded-3xl border border-[var(--border)]/40 bg-[var(--foreground)]/[0.06] p-6 flex items-center min-h-[140px]">
         {/* Mock input bar */}
         <div className="relative pointer-events-none" ref={inputRef}>
           <div className="w-full rounded-2xl border border-[var(--border)] bg-[var(--muted)] py-4 pl-5 pr-14 text-sm min-h-[54px]">
