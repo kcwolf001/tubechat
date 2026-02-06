@@ -1,8 +1,10 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect, useRef } from "react";
 import { useRouter } from "next/navigation";
 import { extractVideoId } from "@/lib/utils";
+
+const DEMO_URL = "https://youtube.com/watch?v=dQw4w9WgXcQ";
 
 export function Hero() {
   const [url, setUrl] = useState("");
@@ -109,65 +111,178 @@ export function Hero() {
           </p>
         </form>
 
-        {/* Chat preview mockup */}
-        <div className="mt-16 max-w-3xl mx-auto animate-fade-in-up-delay-3">
-          <div className="rounded-2xl border border-[var(--card-border)] bg-[var(--card)] shadow-2xl shadow-black/10 overflow-hidden">
-            {/* Window chrome */}
-            <div className="flex items-center gap-2 px-4 py-3 border-b border-[var(--border)]">
-              <div className="flex gap-1.5">
-                <div className="w-3 h-3 rounded-full bg-[#ff5f57]" />
-                <div className="w-3 h-3 rounded-full bg-[#febc2e]" />
-                <div className="w-3 h-3 rounded-full bg-[#28c840]" />
-              </div>
-              <div className="flex-1 text-center">
-                <span className="text-xs text-[var(--muted-foreground)]">
-                  tubechat.ai/chat
-                </span>
-              </div>
-            </div>
-
-            {/* Mock chat content */}
-            <div className="p-6 space-y-4">
-              {/* Video title area */}
-              <div className="flex items-center gap-3 pb-4 border-b border-[var(--border)]">
-                <div className="w-16 h-10 rounded-lg bg-gradient-to-br from-red-500/20 to-red-600/20 flex items-center justify-center">
-                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className="text-red-500">
-                    <polygon points="5 3 19 12 5 21 5 3" />
-                  </svg>
-                </div>
-                <div>
-                  <p className="text-sm font-medium">How Neural Networks Learn — 3Blue1Brown</p>
-                  <p className="text-xs text-[var(--muted-foreground)]">24:18 · 12.4M views</p>
-                </div>
-              </div>
-
-              {/* User message */}
-              <div className="flex justify-end">
-                <div className="max-w-xs rounded-2xl rounded-br-md bg-gradient-to-r from-[var(--accent)] to-[var(--accent-light)] px-4 py-2.5">
-                  <p className="text-sm text-white">
-                    What is backpropagation in simple terms?
-                  </p>
-                </div>
-              </div>
-
-              {/* AI response */}
-              <div className="flex justify-start">
-                <div className="max-w-sm rounded-2xl rounded-bl-md bg-[var(--muted)] px-4 py-3">
-                  <p className="text-sm leading-relaxed">
-                    Backpropagation is the process of adjusting the network&apos;s
-                    weights by working backwards from the output error. Think of
-                    it as the network &quot;learning from its mistakes.&quot;
-                  </p>
-                  <span className="inline-block mt-2 text-xs text-[var(--accent-light)] font-medium cursor-pointer hover:underline">
-                    📍 12:34 — 14:02
-                  </span>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
+        {/* Animated demo */}
+        <DemoAnimation />
       </div>
     </section>
+  );
+}
+
+// Phases: typing URL -> pause -> cursor moves to button -> click -> reset
+type DemoPhase = "idle" | "typing" | "pause" | "moving" | "clicking" | "done";
+
+function DemoAnimation() {
+  const [phase, setPhase] = useState<DemoPhase>("idle");
+  const [typedChars, setTypedChars] = useState(0);
+  const [cursorPos, setCursorPos] = useState<{ x: number; y: number } | null>(null);
+  const buttonRef = useRef<HTMLDivElement>(null);
+  const inputRef = useRef<HTMLDivElement>(null);
+  const containerRef = useRef<HTMLDivElement>(null);
+
+  // Run the animation loop
+  useEffect(() => {
+    let timeout: NodeJS.Timeout;
+
+    const startCycle = () => {
+      setTypedChars(0);
+      setCursorPos(null);
+      setPhase("typing");
+    };
+
+    // Initial delay
+    timeout = setTimeout(startCycle, 1500);
+    return () => clearTimeout(timeout);
+  }, []);
+
+  // Typing phase
+  useEffect(() => {
+    if (phase !== "typing") return;
+    if (typedChars >= DEMO_URL.length) {
+      const timeout = setTimeout(() => setPhase("pause"), 300);
+      return () => clearTimeout(timeout);
+    }
+    const timeout = setTimeout(() => {
+      setTypedChars((c) => c + 1);
+    }, 35);
+    return () => clearTimeout(timeout);
+  }, [phase, typedChars]);
+
+  // Pause then move cursor
+  useEffect(() => {
+    if (phase !== "pause") return;
+    const timeout = setTimeout(() => {
+      setPhase("moving");
+    }, 600);
+    return () => clearTimeout(timeout);
+  }, [phase]);
+
+  // Moving phase - animate cursor from input to button
+  useEffect(() => {
+    if (phase !== "moving") return;
+    if (!buttonRef.current || !inputRef.current || !containerRef.current) return;
+
+    const container = containerRef.current.getBoundingClientRect();
+    const input = inputRef.current.getBoundingClientRect();
+    const button = buttonRef.current.getBoundingClientRect();
+
+    // Start cursor at end of typed text area
+    const startX = input.right - container.left - 20;
+    const startY = input.top - container.top + input.height / 2;
+    setCursorPos({ x: startX, y: startY });
+
+    const endX = button.left - container.left + button.width / 2;
+    const endY = button.top - container.top + button.height / 2;
+
+    // Animate to button
+    const timeout = setTimeout(() => {
+      setCursorPos({ x: endX, y: endY });
+      // After transition, click
+      setTimeout(() => setPhase("clicking"), 500);
+    }, 50);
+
+    return () => clearTimeout(timeout);
+  }, [phase]);
+
+  // Click phase
+  useEffect(() => {
+    if (phase !== "clicking") return;
+    const timeout = setTimeout(() => setPhase("done"), 400);
+    return () => clearTimeout(timeout);
+  }, [phase]);
+
+  // Reset and loop
+  useEffect(() => {
+    if (phase !== "done") return;
+    const timeout = setTimeout(() => {
+      setTypedChars(0);
+      setCursorPos(null);
+      setPhase("idle");
+      // Restart after a beat
+      setTimeout(() => setPhase("typing"), 1200);
+    }, 1500);
+    return () => clearTimeout(timeout);
+  }, [phase]);
+
+  const displayedUrl = DEMO_URL.slice(0, typedChars);
+  const isButtonHighlighted = phase === "moving" || phase === "clicking";
+
+  return (
+    <div
+      ref={containerRef}
+      className="relative mt-12 max-w-2xl mx-auto animate-fade-in-up-delay-3"
+    >
+      {/* Mock input bar */}
+      <div className="flex flex-col sm:flex-row gap-3 pointer-events-none">
+        <div ref={inputRef} className="relative flex-1">
+          <svg
+            className="absolute left-4 top-1/2 -translate-y-1/2 text-[var(--muted-foreground)]"
+            width="18"
+            height="18"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth="2"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+          >
+            <path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71" />
+            <path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71" />
+          </svg>
+          <div className="w-full rounded-xl border border-[var(--border)] bg-[var(--muted)] py-3.5 pl-12 pr-4 text-sm min-h-[48px]">
+            {displayedUrl ? (
+              <span className="text-[var(--foreground)]">
+                {displayedUrl}
+                {phase === "typing" && (
+                  <span className="inline-block w-px h-4 bg-[var(--foreground)] ml-0.5 animate-pulse align-middle" />
+                )}
+              </span>
+            ) : (
+              <span className="text-[var(--muted-foreground)]">
+                Paste a YouTube URL...
+              </span>
+            )}
+          </div>
+        </div>
+        <div
+          ref={buttonRef}
+          className={`rounded-xl bg-gradient-to-r from-[var(--accent)] to-[var(--accent-light)] px-6 py-3.5 text-sm font-medium text-white text-center whitespace-nowrap transition-all duration-200 ${
+            isButtonHighlighted ? "shadow-lg shadow-[var(--accent-glow)] brightness-110" : ""
+          } ${phase === "clicking" ? "scale-[0.96]" : ""}`}
+        >
+          Start chatting →
+        </div>
+      </div>
+
+      {/* Animated cursor */}
+      {cursorPos && (
+        <div
+          className="absolute z-10 transition-all duration-500 ease-in-out"
+          style={{ left: cursorPos.x, top: cursorPos.y }}
+        >
+          <svg
+            width="20"
+            height="20"
+            viewBox="0 0 24 24"
+            fill="white"
+            stroke="var(--background)"
+            strokeWidth="1"
+            className="drop-shadow-lg"
+          >
+            <path d="M5 3l14 8.5L12 14l-2.5 7.5L5 3z" />
+          </svg>
+        </div>
+      )}
+    </div>
   );
 }
 
