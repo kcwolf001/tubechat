@@ -79,7 +79,7 @@ export function Hero() {
               value={url}
               onChange={(e) => setUrl(e.target.value)}
               placeholder="Paste a YouTube URL..."
-              className="w-full rounded-2xl border border-[var(--border)] bg-[var(--muted)] py-4 pl-5 pr-14 text-sm text-[var(--foreground)] placeholder-[var(--muted-foreground)] outline-none focus:border-[var(--accent)] focus:ring-2 focus:ring-[var(--accent-glow)] transition-all"
+              className="w-full rounded-2xl border border-[var(--border)] bg-[var(--muted)] py-4 pl-5 pr-14 text-sm text-[var(--foreground)] placeholder-[var(--muted-foreground)] outline-none hover:border-[var(--accent)] hover:shadow-[0_0_30px_var(--accent-glow),0_0_60px_var(--accent-glow)] focus:border-[var(--accent)] focus:ring-2 focus:ring-[var(--accent-glow)] transition-all"
             />
             <button
               type="submit"
