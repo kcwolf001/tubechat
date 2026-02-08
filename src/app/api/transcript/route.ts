@@ -1,9 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
-import { execFile } from "child_process";
-import { promisify } from "util";
-import path from "path";
-
-const execFileAsync = promisify(execFile);
+import { YoutubeTranscript } from "youtube-transcript";
 
 export async function POST(request: NextRequest) {
   try {
@@ -16,38 +12,24 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    // Call the Python script to fetch the transcript
-    const scriptPath = path.join(process.cwd(), "scripts", "fetch-transcript.py");
+    const items = await YoutubeTranscript.fetchTranscript(videoId);
 
-    const { stdout, stderr } = await execFileAsync("python3", [scriptPath, videoId], {
-      timeout: 30000, // 30 second timeout
-    });
-
-    if (stderr && !stderr.includes("NotOpenSSLWarning")) {
-      console.error("Python stderr:", stderr);
-    }
-
-    const result = JSON.parse(stdout);
-
-    if (result.error) {
-      return NextResponse.json(
-        { error: result.error },
-        { status: 404 }
-      );
-    }
-
-    const segments = result.segments;
-
-    if (!segments || segments.length === 0) {
+    if (!items || items.length === 0) {
       return NextResponse.json(
         { error: "No transcript available for this video." },
         { status: 404 }
       );
     }
 
+    const segments = items.map((item) => ({
+      text: item.text.trim(),
+      offset: round2(item.offset),
+      duration: round2(item.duration),
+    }));
+
     // Build the full transcript with timestamps
     const fullText = segments
-      .map((seg: { offset: number; text: string }) => `[${formatTime(seg.offset)}] ${seg.text}`)
+      .map((seg) => `[${formatTime(seg.offset)}] ${seg.text}`)
       .join("\n");
 
     return NextResponse.json({
@@ -57,11 +39,18 @@ export async function POST(request: NextRequest) {
     });
   } catch (error: unknown) {
     console.error("Transcript fetch error:", error);
-    return NextResponse.json(
-      { error: "Failed to fetch transcript. Please check the URL and try again." },
-      { status: 500 }
-    );
+
+    const message =
+      error instanceof Error && error.message.includes("disabled")
+        ? "Transcripts are disabled for this video."
+        : "Failed to fetch transcript. Please check the URL and try again.";
+
+    return NextResponse.json({ error: message }, { status: 500 });
   }
+}
+
+function round2(n: number): number {
+  return Math.round(n * 100) / 100;
 }
 
 /** Convert seconds to mm:ss or h:mm:ss */
