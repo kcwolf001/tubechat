@@ -90,11 +90,14 @@ export default function ChatPage() {
     }
   }, [pageState, videoId, user]);
 
+  const [loadingStatus, setLoadingStatus] = useState("Fetching transcript...");
+
   // Fetch transcript when the page loads
   useEffect(() => {
     async function loadTranscript() {
       try {
         setPageState("loading");
+        setLoadingStatus("Fetching transcript...");
 
         const res = await fetch("/api/transcript", {
           method: "POST",
@@ -103,6 +106,38 @@ export default function ChatPage() {
         });
 
         const data = await res.json();
+
+        // If bot-blocked and fallback is available, retry with fallback route
+        if (res.status === 503 && data.fallbackAvailable) {
+          setLoadingStatus("Retrying with alternate method...");
+
+          const fallbackRes = await fetch("/api/transcript-fallback", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ videoId }),
+          });
+
+          const fallbackData = await fallbackRes.json();
+
+          if (!fallbackRes.ok) {
+            throw new Error(
+              fallbackData.error || "Failed to fetch transcript"
+            );
+          }
+
+          setTranscript(fallbackData.fullText);
+          setSegments(fallbackData.segments);
+          setPageState("ready");
+
+          setMessages([
+            {
+              id: "welcome",
+              role: "assistant",
+              content: `I've loaded the transcript for this video (${fallbackData.segments.length} segments). Ask me anything — I can summarize it, answer specific questions, or find key moments. What would you like to know?`,
+            },
+          ]);
+          return;
+        }
 
         if (!res.ok) {
           throw new Error(data.error || "Failed to fetch transcript");
@@ -379,7 +414,7 @@ export default function ChatPage() {
                 <div className="absolute inset-0 w-10 h-10 border-2 border-[var(--accent)] border-t-transparent rounded-full animate-spin" />
               </div>
               <div className="text-center">
-                <p className="text-sm font-medium">Fetching transcript...</p>
+                <p className="text-sm font-medium">{loadingStatus}</p>
                 <p className="text-xs text-[var(--muted-foreground)] mt-1">
                   This usually takes a few seconds
                 </p>
