@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
-import { YoutubeTranscript } from "youtube-transcript";
+import { YoutubeTranscript } from "youtube-transcript-plus";
 
 export async function POST(request: NextRequest) {
   try {
@@ -22,7 +22,7 @@ export async function POST(request: NextRequest) {
     }
 
     const segments = items.map((item) => ({
-      text: item.text.trim(),
+      text: decodeHTMLEntities(item.text.trim()),
       offset: round2(item.offset),
       duration: round2(item.duration),
     }));
@@ -47,6 +47,16 @@ export async function POST(request: NextRequest) {
 
     return NextResponse.json({ error: message }, { status: 500 });
   }
+}
+
+function decodeHTMLEntities(text: string): string {
+  return text
+    .replace(/&amp;/g, "&")
+    .replace(/&#39;/g, "'")
+    .replace(/&quot;/g, '"')
+    .replace(/&lt;/g, "<")
+    .replace(/&gt;/g, ">")
+    .replace(/&#(\d+);/g, (_, code) => String.fromCharCode(Number(code)));
 }
 
 function round2(n: number): number {
